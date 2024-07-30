@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import CHEVRON_LEFT_SOLID from "@assets/icons/chevron-left-solid.svg"
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
     const [step, setStep] = useState(1);
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const renderStepContent = () => {
         if (step === 1) {
@@ -64,7 +66,7 @@ const Signup = () => {
             <header className="mt-9 h-8 mb-5">
                 <div className="flex items-center w-full">
                     <div className="w-24 ml-2 flex-shrink-0">
-                        <img src={CHEVRON_LEFT_SOLID} alt="back" className="w-6 h-6"/>
+                        <img src={CHEVRON_LEFT_SOLID} alt="back" className="w-6 h-6" onClick={() => navigate(-1)}/>
                     </div>
                     <div className="flex-grow flex justify-center">
                         <p className="font-bold text-lg">회원가입</p>

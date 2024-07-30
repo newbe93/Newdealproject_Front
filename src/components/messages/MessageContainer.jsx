@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import useConversation from "@zustand/useConversation";
-import MessageInput from "./MessageInput";
-import Messages from "./Messages";
+import MessageInput from "@components/messages/MessageInput";
+import Messages from "@components/messages/Messages";
 import { TiMessages } from "react-icons/ti";
-import { useAuthContext } from "@context/AuthContext";
+import useAuthStore from "@zustand/authStore";
+// import { useAuthContext } from "@context/AuthContext";
 
 const MessageContainer = () => {
 	const { selectedConversation, setSelectedConversation } = useConversation();
-
+	
 	useEffect(() => {
 		// cleanup function (unmounts)
 		return () => setSelectedConversation(null);
@@ -34,11 +35,11 @@ const MessageContainer = () => {
 export default MessageContainer;
 
 const NoChatSelected = () => {
-	const { authUser } = useAuthContext();
+	const {username} = useAuthStore(state => state)
 	return (
 		<div className='flex items-center justify-center w-full h-full'>
 			<div className='px-4 text-center sm:text-lg md:text-xl text-gray-200 font-semibold flex flex-col items-center gap-2'>
-				<p>Welcome 👋 {authUser.fullName} ❄</p>
+				<p>Welcome 👋 {username} ❄</p>
 				<p>Select a chat to start messaging</p>
 				<TiMessages className='text-3xl md:text-6xl text-center' />
 			</div>

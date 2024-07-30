@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Conversation from "@components/sidebar/Conversation";
+import useGetConversations from "@hooks/useGetConversations";
+import useAuthStore from "@zustand/authStore";
 
 const Conversations = () => {
 	const { loading, conversations } = useGetConversations();
+	const {accessToken} = useAuthStore(state => state)
+	
 	return (
 		<div className='py-2 flex flex-col overflow-auto'>
 			{conversations.map((conversation, idx) => (
 				<Conversation
-					key={conversation._id}
+					key={conversation.chatRoomId}
 					conversation={conversation}
-					emoji={getRandomEmoji()}
 					lastIdx={idx === conversations.length - 1}
 				/>
 			))}

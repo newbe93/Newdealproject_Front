@@ -4,6 +4,7 @@ import Home from "@pages/home/Home";
 import DetailLayout from "@router/DetailLayout";
 import Signup from "@pages/signup/Signup";
 import Login from "@pages/login/Login";
+import Chat from "@pages/chat/Chat";
 
 const router = createBrowserRouter([
     {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
             { path: "signup", element: <Signup /> },
             // 로그인, 비밀번호 재설정 등 다른 인증 관련 라우트...
             { path: "login", element: <Login /> },
+            { path: "chat", element: <Chat /> },
         ],
     },
     
