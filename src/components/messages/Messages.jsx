@@ -12,7 +12,11 @@ const Messages = () => {
 	useEffect(() => {
 		setTimeout(() => {
 			lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-		}, 100);
+		});
+
+		return () => {
+			
+		}
 	}, [messages]);
 
 	return (
@@ -25,10 +29,10 @@ const Messages = () => {
 					</div>
 				))}
 
-			{loading && [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
-			{!loading && messages.length === 0 && (
+			{/* {loading && [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)} */}
+			{/* {!loading && messages.length === 0 && (
 				<p className='text-center'>Send a message to start the conversation</p>
-			)}
+			)} */}
 		</div>
 	);
 };

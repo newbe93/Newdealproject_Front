@@ -36,7 +36,7 @@ api.interceptors.response.use(
     const originalRequest = error.config;
     console.log(originalRequest)
     console.log("retry = " + originalRequest._retry)
-    if (error.response.status === 403 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         const response = await axios.post('/api/refreshToken', {}, { withCredentials: true });
@@ -51,7 +51,8 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         console.log("refreshError catch문 안")
-        await handleLogout();
+        // await handleLogout();
+        console.log(refreshError)
         return Promise.reject(refreshError);
       }
     }

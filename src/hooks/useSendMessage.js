@@ -1,5 +1,5 @@
 import { useState } from "react"
-import useConversation from "../zustand/useConversation";
+import useConversation from "@zustand/useConversation";
 import toast from "react-hot-toast";
 
 const useSendMessage = () => {
@@ -7,9 +7,11 @@ const useSendMessage = () => {
   const {messages, setMessages, selectedConversation} = useConversation();
 
   const sendMessage = async (message) => {
+    console.log("sendmessage 왜안돼?")
+    console.log(selectedConversation.chatRoomId)
     setLoading(true);
     try {
-        const res = await fetch(`/api/messages/send/${selectedConversation._id}`, {
+        const res = await fetch(`/socket/messages/send/${selectedConversation.chatRoomId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -26,6 +28,8 @@ const useSendMessage = () => {
         setLoading(false);
     }
 };
+
+    return {loading, sendMessage}
 }
 
 export default useSendMessage

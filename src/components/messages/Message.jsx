@@ -1,23 +1,33 @@
 // import { useAuthContext } from "@context/AuthContext";
 import { extractTime } from "@utils/extractTime";
 import useConversation from "@zustand/useConversation";
+import useAuthStore from "@zustand/authStore"
+import { useEffect } from "react";
 
 const Message = ({ message }) => {
 	// const { authUser } = useAuthContext();
+	
 	const { selectedConversation } = useConversation();
-	const fromMe = message.senderId === authUser._id;
+	const fromMe = message.senderId === useAuthStore.getState().id
+	const authUsername = useAuthStore.getState().username
 	const formattedTime = extractTime(message.createdAt);
 	const chatClassName = fromMe ? "chat-end" : "chat-start";
-	const profilePic = fromMe ? authUser.profilePic : selectedConversation?.profilePic;
+
+	// const profilePic = fromMe ? authUser.profilePic : selectedConversation?.profilePic;
+	const sendername = selectedConversation.members.find(member => member.userId == message.senderId)?.username
+	const profilePic = fromMe ? authUsername : sendername;
 	const bubbleBgColor = fromMe ? "bg-blue-500" : "";
 
 	const shakeClass = message.shouldShake ? "shake" : "";
 
+	useEffect(()=>{
+		// console.log(selectedConversation)
+	},[])
 	return (
 		<div className={`chat ${chatClassName}`}>
 			<div className='chat-image avatar'>
 				<div className='w-10 rounded-full'>
-					<img alt='Tailwind CSS chat bubble component' src={profilePic} />
+					<img alt='Tailwind CSS chat bubble component' src={`https://avatar.iran.liara.run/public/boy?username=${profilePic}`} />
 				</div>
 			</div>
 			<div className={`chat-bubble text-white ${bubbleBgColor} ${shakeClass} pb-2`}>{message.message}</div>
