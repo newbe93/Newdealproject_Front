@@ -11,12 +11,15 @@ export const useAuthStore = create(
             setAccessToken: (accessToken) => set({ accessToken, isLoggedin: true }),
             setUser: (username) => set({ username }),
             setId: (id) => set({ id }),
-            logout: () => set({
-                accessToken: null,
-                isLoggedin: false,
-                username: null,
-                id: 0
-            }),
+            logout: () => {
+                localStorage.removeItem('accessToken');
+                set({
+                    accessToken: null,
+                    isLoggedin: false,
+                    username: null,
+                    id: 0
+            });
+            }
         }),
         {
             name: "auth-storage",
