@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useConversation from "@zustand/useConversation";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "@zustand/authStore"
 
 const useGetLastMessages = (conversations) => {
     const [loading, setLoading] = useState(false);
@@ -33,15 +34,19 @@ const useGetLastMessages = (conversations) => {
                     return;
                 }
 
+                if(res.status === 401) {
+                    useAuthStore.getState().logout();
+                    throw new Error('시간이 초과하여 로그아웃 되었습니다.');
+                }
+
                 if (!res.ok) {
                     throw new Error('메시지를 불러오는 데 실패했습니다.');
                 }
-                console.log("useGetLstmesage " + data)
-                console.log(data)
+             
                 setLastMessages(data);
             } catch (error) {
-                console.log(error);
                 toast.error(error.message);
+                navigate('/login');
             } finally {
                 setLoading(false);
             }
