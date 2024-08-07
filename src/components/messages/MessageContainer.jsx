@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useConversation from "@zustand/useConversation";
 import MessageInput from "@components/messages/MessageInput";
 import Messages from "@components/messages/Messages";
@@ -6,20 +6,54 @@ import { TiMessages } from "react-icons/ti";
 import useAuthStore from "@zustand/authStore";
 import { useNavigate, useParams } from "react-router-dom";
 import CHEVRON_LEFT_SOLID from "@assets/icons/chevron-left-solid.svg"
+import api from "@api/interceptor"
 
 const MessageContainer = () => {
 	const { selectedConversation, setSelectedConversation } = useConversation();
 	const { accessToken, id } = useAuthStore()
 	const {chatRoomId} = useParams();
+	const [loading, setLoading] = useState(false)
 	const navigate = useNavigate();
 	const currentUsername = useAuthStore(state => state.username);
-	const otherMember = selectedConversation.members.find(member => member.username !== currentUsername);
+	const otherMember = selectedConversation?.members.find(member => member.username !== currentUsername);
 	const otherUsername = otherMember?.username || '';
+
+	const fetchConversationById = async () => {
+		const response = await api.get(`/api/v1/chat/${chatRoomId}`)
+		console.log(response)
+		return response.data.data
+	}
 	
 	useEffect(() => {
 		// // cleanup function (unmounts)
 		// return () => setSelectedConversation(null);
-		const isChatRoomMember = selectedConversation.members.find(member => member.userId == id)
+		if(!accessToken) {
+			navigate('/login');
+			return;
+		} 
+
+		const loadConversation = async () => {
+            if (selectedConversation?.chatRoomId === chatRoomId) {
+                return; // 대화가 이미 로드된 경우
+            }
+
+            setLoading(true);
+            // setError(null);
+
+            try {
+                const conversationData = await fetchConversationById(chatRoomId);
+                setSelectedConversation(conversationData);
+            } catch (err) {
+                console.error("대화 가져오기 실패:", err);
+                setError("대화를 불러오는데 실패했습니다. 다시 시도해주세요.");
+                navigate('/chat');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadConversation();
+
 		setSelectedConversation({
 			...selectedConversation,
 			chatRoomId
