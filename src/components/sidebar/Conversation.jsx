@@ -55,13 +55,15 @@ const Conversation = ({ conversation, lastIdx }) => {
 						<p className='font-bold flex gap-2'>
 							<span>{conversation.chatRoomName}</span>
 							<span className='text-gray-400'>{conversation.members.length}</span>
-							<span className='grow text-right text-gray-300 font-semibold text-sm'>{formatMessageTime(lastMessage?.createdAt)}</span>
+							{
+								lastMessage?.createdAt == undefined ? '' : <span className='grow text-right text-gray-300 font-semibold text-sm'>{formatMessageTime(lastMessage?.createdAt)}</span>
+							}
 						</p>
 						<div className='text-sm flex'>
 							<span>{lastMessage?.message}</span>
 							<div className='grow flex justify-end items-center'>
 								{
-									conversation?.unreadCount == 0 ? '' :
+									conversation?.unreadCount == 0 || conversation?.unreadCount == undefined ? '' :
 									<div className='flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-white'><span>{conversation?.unreadCount}</span></div>
 								}
 							</div>

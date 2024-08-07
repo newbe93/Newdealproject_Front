@@ -31,8 +31,8 @@ import useAuthStore from "@zustand/authStore";
 import useListenMessages from "@hooks/useListenMessages";
 import { useNavigate } from "react-router-dom";
 
-const Conversations = () => {
-    const { loading: conversationsLoading, conversations } = useGetConversations();
+const Conversations = ({refreshKey}) => {
+    const { loading: conversationsLoading, conversations, refetch  } = useGetConversations();
     const { lastMessages, loading: lastMessagesLoading } = useGetLastMessages(conversations);
     const [combinedConversations, setCombinedConversations] = useState([]);
     const { accessToken } = useAuthStore(state => state);
@@ -43,6 +43,9 @@ const Conversations = () => {
     
     useListenMessages(handleNavigate);
 
+    useEffect(()=>{
+        refetch();
+    },[refreshKey])
     useEffect(() => {
         if (conversations.length > 0 && lastMessages) {
             const combined = conversations.map(conv => {

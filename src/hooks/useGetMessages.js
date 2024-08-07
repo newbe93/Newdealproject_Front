@@ -29,6 +29,10 @@ const useGetMessages = () => {
 					navigate('/chat');  // 채팅 목록 페이지로 리다이렉트
 					return;
 				  }
+
+				if(res.status === 401 ) {
+					toast.error("refresToken 없음")
+				}
 		
 				if (!res.ok) {
 					throw new Error('메시지를 불러오는 데 실패했습니다.');

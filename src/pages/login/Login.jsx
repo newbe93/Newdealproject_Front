@@ -4,7 +4,7 @@ import axios from "axios";
 import LOGO from '@assets/logo.png'
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "@zustand/authStore";
-import anyStore from "../../zustand/anyStore";
+import anyStore from "@zustand/anyStore";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -89,7 +89,7 @@ const Login = () => {
                             <input type="password" placeholder="비밀번호를 입력해주세요." name="password" className="border-b w-full pb-2" value={password} onChange={handleInputvalue}/>
                         </div>
                         <button className="btn btn-primary w-full text-lg mt-8" onClick={handleLoginBtnClick}>로그인</button>
-                        <Link to={`/signup`} className="btn btn-accent w-full text-lg mt-3" onClick={handleLoginBtnClick}>회원가입</Link>
+                        <Link to={`/signup`} className="btn btn-accent w-full text-lg mt-3" >회원가입</Link>
                     </div>
             </main>
             </div>
