@@ -1,14 +1,20 @@
 import { create } from 'zustand';
 import io from 'socket.io-client';
+import useAuthStore from "@zustand/authStore"
+import { useEffect } from 'react';
 
-const useSocketStore = create((set) => ({
+export const useSocketStore = create((set) => ({
   socket: null,
   onlineUsers: [],
-  initSocket: (authUser) => {
+  initializeSocket: () => {
+    console.log("initsocket")
+    const authUser = useAuthStore.getState().id;
+
+    console.log("authUserId = " + authUser)
     if (authUser) {
-      const socket = io("https://chat-app-yt.onrender.com", {
+      const socket = io("http://localhost:5000", {
         query: {
-          userId: authUser._id,
+          userId: authUser,
         },
       });
 
@@ -27,7 +33,7 @@ const useSocketStore = create((set) => ({
       };
     }
   },
-  closeSocket: () => {
+  disconnectSocket: () => {
     set((state) => {
       if (state.socket) {
         state.socket.close();
@@ -37,4 +43,22 @@ const useSocketStore = create((set) => ({
   },
 }));
 
-export default useSocketStore;
+// 소켓 연결 및 해제를 관리하는 커스텀 훅
+export const useSocketSetup = () => {
+  const initializeSocket = useSocketStore(state => state.initializeSocket);
+  const disconnectSocket = useSocketStore(state => state.disconnectSocket);
+  const authUser = useAuthStore(state => state.id);
+
+  useEffect(() => {
+    console.log(authUser)
+    if (authUser) {
+      initializeSocket();
+    } else {
+      disconnectSocket();
+    }
+    
+    return () => {
+      disconnectSocket();
+    };
+  }, [authUser, initializeSocket, disconnectSocket]);
+};

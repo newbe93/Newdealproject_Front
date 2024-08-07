@@ -8,16 +8,16 @@ import anyStore from "../../zustand/anyStore";
 
 const Login = () => {
     const navigate = useNavigate();
-    const {setAccessToken, setUser, setId} = useAuthStore(state => state)
+    const {setAccessToken, setUser, setId, accessToken} = useAuthStore(state => state)
     const [loginRequest, setLoginReqeust] = useState({
         username : '',
         password : ''
     })
-    
 
-    useEffect(() => {
-        anyStore.getState().setAny("ㅇㅓ쩌라고")
-    },[])
+    useEffect(()=>{
+        if(accessToken) navigate('/chat')
+    },[accessToken])
+
 
     const {username, password} = loginRequest
 
@@ -53,6 +53,8 @@ const Login = () => {
             }catch (error) {
                 // 에러 처리
                 console.error('Login failed:', error);
+            } finally {
+                navigate('/chat')
             }
         }
         login(username, password);
@@ -61,9 +63,9 @@ const Login = () => {
     return (
         <>
             <div className="flex w-full h-[100vh] items-center">
-                <header className="mt-9 h-8 mb-5 fixed left-0 top-0">
+                <header className="mt-9 h-8 mb-5 fixed left-0 top-0 px-2">
                     <div className="flex items-center w-full">
-                        <div className="w-24 ml-2 flex-shrink-0">
+                        <div className="w-9 ml-2 flex-shrink-0">
                             <img src={CHEVRON_LEFT_SOLID} alt="back" className="w-6 h-6" onClick={() => navigate(-1)}/>
                         </div>
                         <div className="flex-grow flex justify-center">
