@@ -9,9 +9,6 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 function Footer() {
     const {accessToken, logout} = useAuthStore(); 
-    useEffect(()=>{
-        if(!accessToken) navigate('/login')
-    },[])
 
     const handleLogoutTabClick = () => {
         logout();
