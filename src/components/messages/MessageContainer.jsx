@@ -76,7 +76,7 @@ const MessageContainer = () => {
 						<span className='text-gray-900 font-bold'>{selectedConversation.chatRoomName}</span>
 						<span className='text-gray-400 font-bold'>{selectedConversation.members.length}</span>
 					</div>
-					<div className="flex">
+					<div className="flex font-bold">
 						<span>{`(`}</span>
 						<div className="flex gap-1">
 							{
