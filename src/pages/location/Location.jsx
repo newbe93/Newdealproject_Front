@@ -42,6 +42,7 @@ function Location() {
             if (friend) {
                 const moveLatLon = new kakao.maps.LatLng(friend.latitude, friend.longitude);
                 map.setCenter(moveLatLon);
+                map.setLevel(8)
             }
         }
     };
