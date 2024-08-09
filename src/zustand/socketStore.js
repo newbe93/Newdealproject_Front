@@ -2,17 +2,16 @@ import { create } from 'zustand';
 import io from 'socket.io-client';
 import useAuthStore from "@zustand/authStore"
 import { useEffect } from 'react';
+const SOCKET_API_URL = import.meta.env.VITE_SOCKET_API_URL;
 
 export const useSocketStore = create((set) => ({
   socket: null,
   onlineUsers: [],
   initializeSocket: () => {
-    console.log("initsocket")
     const authUser = useAuthStore.getState().id;
 
-    console.log("authUserId = " + authUser)
     if (authUser) {
-      const socket = io("http://localhost:5000", {
+      const socket = io(SOCKET_API_URL, {
         query: {
           userId: authUser,
         },
@@ -50,7 +49,6 @@ export const useSocketSetup = () => {
   const authUser = useAuthStore(state => state.id);
 
   useEffect(() => {
-    console.log(authUser)
     if (authUser) {
       initializeSocket();
     } else {

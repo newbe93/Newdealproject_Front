@@ -27,13 +27,7 @@ const Conversation = ({ conversation, lastIdx }) => {
 	
 	
 	useEffect(()=>{
-		// console.log(conversation)
-		// console.log("other user = " + otherUserId)
-		// console.log(socket)
-		// console.log("onlineUser = " + onlineUsers)
-		// console.log("isOnline ? = " , isOnline)
-		console.log("lastMessage = " + lastMessage?.message)
-		console.log(lastMessage)
+		
 	},[onlineUsers,conversation])
 
 	return (

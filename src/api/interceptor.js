@@ -8,15 +8,11 @@ api.interceptors.request.use(
   (config) => {
     try {
       const accessToken = useAuthStore.getState().accessToken;
-      console.log("인터셉터 시작");
-      console.log("accessToken:", accessToken);
       
       if (accessToken) {
-        console.log("accessToken at Interceptor:", accessToken);
         config.headers['Authorization'] = `${accessToken}`;
       }
       
-      console.log("config headers = ", config);
       return config;
     } catch (error) {
       console.error("요청 인터셉터 내부 에러:", error);

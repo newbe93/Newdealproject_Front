@@ -13,7 +13,6 @@ const useGetConversations = () => {
     try {
         const res = await api.get('/api/v1/chat');
         
-        console.log(res.data)
         if(res.data.error){
             console.log("getConversations Error = " + res.data.error)
             throw new Error(res.data.error);

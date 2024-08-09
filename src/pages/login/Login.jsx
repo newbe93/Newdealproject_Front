@@ -31,7 +31,6 @@ const Login = () => {
     const handleLoginBtnClick = () => {
         const login = async (username, password) => {
             try{
-                console.log(username, password)
                 const response = await axios.post('/api/login', {username, password});
                 
                 const accessToken = response.headers['authorization'];
@@ -43,7 +42,6 @@ const Login = () => {
                     // refreshToken은 서버에서 HttpOnly 쿠키로 자동 설정됨
                     console.log('로그인 성공');
 
-                    console.log(response.data)
                     setAccessToken(accessToken);
                     setUser(response.data.username);
                     setId(response.data.id)

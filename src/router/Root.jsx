@@ -1,10 +1,16 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useSocketSetup } from '@zustand/socketStore';
 import { Toaster } from 'react-hot-toast';
 import Footer from '@components/footer/Footer';
+import useListenMessages from '@hooks/useListenMessages';
 
 function Root() {
   useSocketSetup();
+  const navigate = useNavigate();
+  const handleNavigate = (chatRoomId) => {
+    navigate(`/chat/${chatRoomId}`);
+  };
+  useListenMessages(handleNavigate);
   const location = useLocation();
 
   // MessageContainer 페이지에서는 Footer를 숨깁니다

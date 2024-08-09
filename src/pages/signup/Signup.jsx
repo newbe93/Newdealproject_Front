@@ -133,7 +133,6 @@ const Signup = () => {
             
             // 회원가입 로직 구현
             joinFetch();
-            console.log('ID:', username, 'Password:', password);
         }
     };
 

@@ -26,7 +26,6 @@ function Friend({ moveMapToLocation }) {
     const fetch = async() => {
         try{
             const response = await api.get('/api/v1/friendship')
-            console.log(response)
             if(response.status === 401) {
                 useAuthStore.getState().logout();
                 throw new Error('시간이 초과하여 로그아웃 되었습니다.');
@@ -47,7 +46,6 @@ function Friend({ moveMapToLocation }) {
             const response = await api.post(`/api/v1/friendship`,{
                 username : friendUsername
             })
-            console.log(response)
             if(response.status == 200){
                 closeModalBtnRef.current.click();
                 fetch();

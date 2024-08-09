@@ -15,7 +15,6 @@ const useGetMessages = () => {
 			try {
 				const res = await fetch(`/socket/messages/${selectedConversation.chatRoomId}`);
 				const data = await res.json();
-				console.log(res.status)
 				if (res.status === 403) {
 					// 접근 권한 없음
 					toast.error(data.error);
@@ -38,7 +37,6 @@ const useGetMessages = () => {
 					throw new Error('메시지를 불러오는 데 실패했습니다.');
 				}
 
-				
 				setMessages(data);
 
 			} catch (error) {

@@ -23,7 +23,6 @@ const Sidebar = () => {
   const fetch = async() => {
     try{
         const response = await api.get('/api/v1/friendship')
-        console.log(response)
         if(response.status === 401) {
             useAuthStore.getState().logout();
             throw new Error('시간이 초과하여 로그아웃 되었습니다.');
@@ -56,7 +55,6 @@ const Sidebar = () => {
         id : selectedFriends,
         name : chatRoomName
       })
-      console.log(response.data)
       if(response.status == 200){
         closeModalBtnRef.current.click();
         setRefreshKey(prev => prev + 1)

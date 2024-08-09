@@ -20,7 +20,6 @@ const MessageContainer = () => {
 
 	const fetchConversationById = async () => {
 		const response = await api.get(`/api/v1/chat/${chatRoomId}`)
-		console.log(response)
 		return response.data.data
 	}
 	

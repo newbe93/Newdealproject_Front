@@ -9,7 +9,6 @@ const Chat = () => {
 	const {isLoggedin} = useAuthStore(state => state)
 	const navigate = useNavigate();
 	useEffect(()=>{
-		console.log("isLoggedIn? = " + isLoggedin)
 		if(!isLoggedin) navigate('/login')
 	},[])
 		

@@ -7,8 +7,6 @@ const useSendMessage = () => {
   const {messages, setMessages, selectedConversation} = useConversation();
 
   const sendMessage = async (message) => {
-    console.log("sendmessage 왜안돼?")
-    console.log(selectedConversation.chatRoomId)
     setLoading(true);
     try {
         const res = await fetch(`/socket/messages/send/${selectedConversation.chatRoomId}`, {

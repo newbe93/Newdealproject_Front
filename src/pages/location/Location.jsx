@@ -14,12 +14,12 @@ function Location() {
     const mapRef = useRef(null)
     const [map, setMap] = useState(null);
     
+    
 
     const sendLocationToServer = async (latitude, longitude) => {
         try {
         const response =   await api.post('/api/v1/userLocation', { latitude, longitude });
         //   fetchFriendsLocations();
-        console.log(response.data)
         } catch (error) {
           setError('서버에 위치 정보를 전송하는데 실패했습니다.');
         }
@@ -28,7 +28,6 @@ function Location() {
     const getFriendLocations = async () => {
         try {
             const response = await api.get('/api/v1/userLocation');
-            console.log(response.data)
             return response.data.data;
         } catch (error) {
             setError('친구들의 위치 정보를 가져오는데 실패했습니다.');
@@ -131,33 +130,76 @@ function Location() {
         mapRef.current = map;
     };
   
+    // useEffect(() => {
+    //     if (!navigator.geolocation) {
+    //         setError('Geolocation is not supported by your browser');
+    //         return;
+    //     }
+
+    //     navigator.geolocation.getCurrentPosition(
+    //         async (position) => {
+    //             const newLocation = {
+    //                 latitude: position.coords.latitude,
+    //                 longitude: position.coords.longitude
+    //             };
+    //             setLocation(newLocation);
+    //             // await sendLocationToServer(newLocation.latitude,newLocation.longitude)
+    //             // await getFriendLocations();
+    //             await sendLocationToServer(newLocation.latitude, newLocation.longitude);
+    //             const friendsData = await getFriendLocations();
+    //             const myLocation = {userId : friendsData.id, username : friendsData.username, latitude : friendsData.latitude, longitude : friendsData.longitude}
+    //             setFriendLocations(friendsData.friendsLocations);
+    //             setMyLocation(myLocation)
+    //             initializeMap(newLocation, friendsData.friendsLocations,myLocation );
+
+    //         },
+    //         (error) => {
+    //         setError(`Error: ${error.message}`);
+    //         }
+    //     );
+    // }, []);
     useEffect(() => {
-        if (!navigator.geolocation) {
-            setError('Geolocation is not supported by your browser');
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                const newLocation = {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
-                };
-                setLocation(newLocation);
-                // await sendLocationToServer(newLocation.latitude,newLocation.longitude)
-                // await getFriendLocations();
-                await sendLocationToServer(newLocation.latitude, newLocation.longitude);
-                const friendsData = await getFriendLocations();
-                const myLocation = {userId : friendsData.id, username : friendsData.username, latitude : friendsData.latitude, longitude : friendsData.longitude}
-                setFriendLocations(friendsData.friendsLocations);
-                setMyLocation(myLocation)
-                initializeMap(newLocation, friendsData.friendsLocations,myLocation );
-
-            },
-            (error) => {
-            setError(`Error: ${error.message}`);
+        // Kakao 지도 스크립트 로드
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_API_KEY}&autoload=false`;
+        document.head.appendChild(script);
+    
+        script.onload = () => {
+            window.kakao.maps.load(() => {
+                if (!navigator.geolocation) {
+                    setError('Geolocation is not supported by your browser');
+                    return;
+                }
+    
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const newLocation = {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
+                        };
+                        setLocation(newLocation);
+                        await sendLocationToServer(newLocation.latitude, newLocation.longitude);
+                        const friendsData = await getFriendLocations();
+                        const myLocation = {userId : friendsData.id, username : friendsData.username, latitude : friendsData.latitude, longitude : friendsData.longitude}
+                        setFriendLocations(friendsData.friendsLocations);
+                        setMyLocation(myLocation)
+    
+                        initializeMap(newLocation, friendsData.friendsLocations, myLocation);
+                    },
+                    (error) => {
+                        setError(`Error: ${error.message}`);
+                    }
+                );
+            });
+        };
+    
+        return () => {
+            const script = document.querySelector('script[src^="//dapi.kakao.com/v2/maps/sdk.js"]');
+            if (script) {
+                document.head.removeChild(script);
             }
-        );
+        };
     }, []);
 
    

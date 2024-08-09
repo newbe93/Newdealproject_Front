@@ -37,11 +37,9 @@ const Conversations = ({refreshKey}) => {
     const [combinedConversations, setCombinedConversations] = useState([]);
     const { accessToken } = useAuthStore(state => state);
     const navigate = useNavigate();
-    const handleNavigate = (chatRoomId) => {
-        navigate(`/chat/${chatRoomId}`);
-      };
+   
     
-    useListenMessages(handleNavigate);
+    
 
     useEffect(()=>{
         refetch();
@@ -49,9 +47,7 @@ const Conversations = ({refreshKey}) => {
     useEffect(() => {
         if (conversations.length > 0 && lastMessages) {
             const combined = conversations.map(conv => {
-                console.log("lastMessages = " + lastMessages)
                 const lastMessage = lastMessages.find(msg => msg.chatRoomId == conv.chatRoomId);
-                console.log(conv)
                 return { ...conv, ...lastMessage };
             });
 
@@ -68,8 +64,6 @@ const Conversations = ({refreshKey}) => {
         }
 
         
-		console.log("combinedConnversations = " + combinedConversations)
-		console.log(combinedConversations)
     }, [conversations, lastMessages]);
 
     const loading = conversationsLoading || lastMessagesLoading;
